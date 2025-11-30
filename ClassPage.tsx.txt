@@ -1,0 +1,89 @@
+import { Header } from "@/components/Header";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Search, BookOpen, Video, FileText } from "lucide-react";
+import { useState } from "react";
+
+interface ClassPageProps {
+  className: string;
+  description: string;
+}
+
+const resources = [
+  { title: "Video Lectures", icon: Video, count: "50+ videos", color: "text-primary" },
+  { title: "Study Materials", icon: FileText, count: "100+ PDFs", color: "text-secondary" },
+  { title: "Practice Tests", icon: BookOpen, count: "30+ tests", color: "text-accent" },
+];
+
+export const ClassPage = ({ className, description }: ClassPageProps) => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header />
+      
+      <main className="container px-4 py-12">
+        <div className="text-center mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
+          <h2 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            {className}
+          </h2>
+          <p className="text-lg text-muted-foreground">{description}</p>
+        </div>
+
+        {/* Search Bar */}
+        <div className="max-w-2xl mx-auto mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search for courses, materials, or topics..."
+              className="pl-10 h-12 text-base"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/* Resources Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {resources.map((resource, index) => (
+            <Card 
+              key={index}
+              className="hover:shadow-lg transition-all duration-300 hover:scale-105 border-2 hover:border-primary/50 animate-in fade-in slide-in-from-bottom-8"
+              style={{ animationDelay: `${index * 150}ms` }}
+            >
+              <CardHeader>
+                <resource.icon className={`h-8 w-8 ${resource.color} mb-2`} />
+                <CardTitle>{resource.title}</CardTitle>
+                <CardDescription>{resource.count}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <button className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors font-medium">
+                  Explore
+                </button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Subjects Section */}
+        <div>
+          <h3 className="text-2xl font-bold mb-6">Subjects</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {["Mathematics", "Physics", "Chemistry", "Biology"].map((subject, index) => (
+              <Card 
+                key={subject}
+                className="hover:shadow-md transition-all duration-300 cursor-pointer hover:border-primary animate-in fade-in"
+                style={{ animationDelay: `${(index + 3) * 150}ms` }}
+              >
+                <CardHeader>
+                  <CardTitle className="text-lg">{subject}</CardTitle>
+                </CardHeader>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+};
